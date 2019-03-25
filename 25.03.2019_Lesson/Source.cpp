@@ -119,7 +119,6 @@ void erase_by_number(Car*&cs, char flag) {
 	char str[10];
 	short int number;
 	int index = -1;
-	int choice;
 	if (flag == 's')
 	{
 		cout << "Enter string value to erase" << endl;
@@ -252,6 +251,62 @@ void edit(Car*&cs, char flag) {
 	}
 }
 
+struct my_example {
+	int kod:11; //727
+	int part1:11; //345
+	int part2:11; //567
+	//поставили ограничение по 10 битов (т.к. максимальное трехзначное число 999 - пормещается в 10 битов + 1 запасной)
+	//это можно посмотреть в калькуляторе в режиме "программист": например, максиммально двузначное число 99 занимает 8 бит)
+};
+
+// 20.	**Разработайте структуру «Квартира»(номер квартиры, кол - во комнат, общая площадь).
+// Разработайте структуру «Дом»(номер, кол - во квартир, массив квартир).
+// Создайте экземпляр структуры  и реализуйте для него следующие функции :
+//•	Печать всех квартир
+//•	Добавление квартиры
+//•	Удаление квартиры
+//Примечание : массив квартир можно сделать статическим.
+template<typename T> //шаблонная функция для любого типа теперь
+void add(T*&cc, T c) {
+	if (buffer_size == 0)
+	{
+		buffer_size = 4;
+		cc = new T[buffer_size];
+	}
+	else
+	{
+		if (current_size == buffer_size)
+		{
+			buffer_size *= 2;
+			T*tmp = new T[buffer_size];
+			for (int i = 0; i < current_size; i++)
+				tmp[i] = cc[i];
+			delete[] cc;
+			cc = tmp;
+		}
+	}
+	cc[current_size++] = c;
+}
+struct flat {
+	int flat_no : 8;
+	int rooms : 4;
+	int area : 8;
+
+	void print() {
+		cout << flat_no << " " << rooms << " " << area << endl;
+	}
+};
+struct home {
+	int home_nom : 10; //10 битов на 400 домов по калькулятору 9+1
+	int flats : 8;
+	flat *fs;
+	int current_size = 0;
+	int buffer_size = 0;
+};
+
+
+
+
 
 int main()
 {
@@ -315,11 +370,38 @@ int main()
 		break;
 		case 4:
 		{
+			cout << sizeof(my_example) << endl;
 
+			my_example ex;
+			ex.kod = 727;
+			ex.part1 = 345;
+			ex.part2 = 567;
+			cout << "(" << ex.kod << ")" << ex.part1 << "-" << ex.part2 << endl;
 		}
 		break;
 		case 5:
 		{
+			flat f;
+			f.flat_no = 58;
+			f.rooms = 4;
+			f.area = 100;
+
+			cout << f.flat_no << " " << f.rooms << " " << f.area << endl;
+
+			flat *fs = 0;
+			ifstream in2("in2.txt");
+			int fn, rs, area;
+			flat tmp;
+			while (!in2.eof())
+			{
+				in2 >> fn >> rs >> area;
+				tmp.flat_no = fn;
+				tmp.rooms = rs;
+				tmp.area = area;
+				add(fs, tmp);
+			}
+			for (int i = 0; i < current_size; i++)
+				fs[i].print();
 
 		}
 		break;

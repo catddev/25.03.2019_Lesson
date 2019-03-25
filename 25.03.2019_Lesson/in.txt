@@ -1,0 +1,5 @@
+grey toyota s 221BEZ02
+black porche s 0000OOO
+white lamborghini n 11111
+red ferrari n 777
+baklazhan lada-sedan s ORVYWEGOR

@@ -96,24 +96,24 @@ struct Car {
 };
 
 void add(Car*&cc, Car c) {
-	if (buffer_size == 0) 
+	if (buffer_size == 0)
 	{
 		buffer_size = 4;
-		cc = new Car[buffer_size]; 
+		cc = new Car[buffer_size];
 	}
 	else
 	{
 		if (current_size == buffer_size)
 		{
 			buffer_size *= 2;
-			Car*tmp = new Car[buffer_size]; 
+			Car*tmp = new Car[buffer_size];
 			for (int i = 0; i < current_size; i++)
-				tmp[i] = cc[i]; 
+				tmp[i] = cc[i];
 			delete[] cc;
-			cc = tmp; 
+			cc = tmp;
 		}
 	}
-	cc[current_size++] = c; 
+	cc[current_size++] = c;
 }
 void erase_by_number(Car*&cs, char flag) {
 	char str[10];
@@ -252,9 +252,9 @@ void edit(Car*&cs, char flag) {
 }
 
 struct my_example {
-	int kod:11; //727
-	int part1:11; //345
-	int part2:11; //567
+	int kod : 11; //727
+	int part1 : 11; //345
+	int part2 : 11; //567
 	//поставили ограничение по 10 битов (т.к. максимальное трехзначное число 999 - пормещается в 10 битов + 1 запасной)
 	//это можно посмотреть в калькуляторе в режиме "программист": например, максиммально двузначное число 99 занимает 8 бит)
 };
@@ -303,9 +303,29 @@ struct home {
 	int current_size = 0;
 	int buffer_size = 0;
 };
+void erase(flat*&fs) {
 
-
-
+	int number;
+	int index = -1;
+	cout << "Enter number of the flat to erase" << endl;
+	cin >> number;
+	for (int i = 0; i < current_size; i++)
+	{
+		if (fs[i].flat_no == number)
+		{
+			index = i;
+			break;
+		}
+	}
+	if (index != -1)
+	{
+		for (int i = index; i < current_size - 1; i++)
+		{
+			fs[i] = fs[i + 1];
+		}
+		current_size--;
+	}
+}
 
 
 int main()
@@ -342,7 +362,7 @@ int main()
 		{
 			Car *cs = 0;
 			Car tmp;
-			
+
 			if (!in_file)
 				cerr << "File open error" << endl;
 			else
@@ -379,7 +399,7 @@ int main()
 			cout << "(" << ex.kod << ")" << ex.part1 << "-" << ex.part2 << endl;
 		}
 		break;
-		case 5:
+		case 5://почему кейс в одном сеансе консоли срабатывает лишь раз? при повторном вызове ошибка
 		{
 			flat f;
 			f.flat_no = 58;
@@ -402,6 +422,12 @@ int main()
 			}
 			for (int i = 0; i < current_size; i++)
 				fs[i].print();
+
+			erase(fs);
+			for (int i = 0; i < current_size; i++)
+				fs[i].print();
+
+			delete[] fs;
 
 		}
 		break;
